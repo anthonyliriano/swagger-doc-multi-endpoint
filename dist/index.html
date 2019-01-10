@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Swagger Api DOc</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" >
+    <link rel="stylesheet" type="text/css" href="./custom.css" >
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+  </head>
+
+  <body>
+    <div class="information-container-c" style="font-family: sans-serif;color: #fafafa;padding:5px 20px 5px 20px;box-sizing: border-box;">
+     
+     
+      <div class='inline'>
+        <h2>API Documentation <span style="color: darkslategray;font-size: 15px;" id="envid"></span></h2>
+      </div>
+      
+      <div style="padding:5px 20px 5px 20px;float: right;">
+          <div class="form-group">
+            <label for="drop-down" style="font-size: 14px;font-weight: bold;">Select Endpoint</label>
+            <select onchange="leaveChange(this)" id="endpoints" class="dropdown" name="drop-down">
+            </select>
+            </div>
+        </div>
+
+
+        <div style="padding:5px 20px 5px 20px;float: right;">
+          <div class="form-group">
+            <label for="drop-down-env" style="font-size: 14px;font-weight: bold;">Select Environment</label>
+            <select onchange="leaveChangeEnv(this)" id="envsid" class="dropdown" name="drop-down-env">
+            </select>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="swagger-ui"></div>
+
+    <script src="./swagger-ui-bundle.js"> </script>
+    <script src="./swagger-ui-standalone-preset.js"> </script>
+    <script src="./jquery-3.3.1.min.js"></script>
+    <script>
+    function showApi(jsonUrl, titleText){
+      const ui = SwaggerUIBundle({
+        url: jsonUrl,
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "BaseLayout"
+      });
+     window.ui = ui
+     document.title = "Docs - "+titleText;
+    }  
+    
+    function leaveChangeEnv(control) {
+      $('#endpoints').find('option').remove();
+      $("#envid").text("[environment - "+control.value+"]")
+      $.getJSON("./config.json?t="+new Date().getTime(), function (result) {
+        $.each(result, function(key, value){
+          $.each(value, function(Pkey, value){
+              $.each(value, function(key, value){
+                if(control.value == Pkey.toLowerCase()){
+                  $("#endpoints").append('<option value="'+value.url+'">'+value.title+'</option>');
+                }
+               });
+            });
+          });
+          sel =  document.getElementById("endpoints");
+          showApi(sel.value, sel.options[sel.selectedIndex].text);
+        });
+    }
+
+    function leaveChange(control) {
+      var uri = window.location.toString();
+      if (uri.indexOf("#/") > 0) {
+          var clean_uri = uri.substring(0, uri.indexOf("#/"));
+          window.history.replaceState({}, document.title, clean_uri);
+      }
+        showApi(control.value, control.options[control.selectedIndex].text);
+    }
+  
+    window.onload = function() {
+        $.getJSON("./config.json?t="+new Date().getTime(), function (result) {
+        $.each(result, function(key, value){
+          $.each(value, function(Pkey, value){
+              $("#envsid").append(new Option(Pkey.toUpperCase(), Pkey.toLowerCase()));
+          });
+        });
+
+        envSel = document.getElementById("envsid");
+        $("#envid").text("[environment - "+envSel.value+"]")
+        $.getJSON("./config.json?t="+new Date().getTime(), function (result) {
+        $.each(result, function(key, value){
+          $.each(value, function(Pkey, value){
+              $.each(value, function(key, value){
+                if(envSel.value == Pkey.toLowerCase()){
+                  $("#endpoints").append('<option value="'+value.url+'">'+value.title+'</option>');
+                }
+               });
+            });
+          });
+          sel =  document.getElementById("endpoints");
+          showApi(sel.value, sel.options[sel.selectedIndex].text);
+        });
+      });
+    }
+
+   
+  </script>
+  </body>
+</html>

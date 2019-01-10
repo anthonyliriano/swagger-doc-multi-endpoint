@@ -1,0 +1,46 @@
+html
+{
+  box-sizing: border-box;
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
+
+*,
+*:before,
+*:after
+{
+  box-sizing: inherit;
+}
+
+body
+{
+  margin:0;
+  background: #fafafa;
+}
+.swagger-ui .info {
+  margin: 10px 0 !important;
+}
+.swagger-ui .info .title{
+  font-size: 26px;
+}
+.information-container-c{
+  background: rgb(73, 204, 144) !important;
+}
+select.dropdown {
+  color: darkslategray;
+  font-weight: bold;
+  margin: 0px;
+  height: 38px;
+  width: 100%;
+  padding: 9px;
+  font-size: 12px;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  -moz-appearance: none;
+  appearance: none;
+  background-size: 11px 7px;
+  border-radius: 3px;
+}
+.inline { 
+  display: inline-block; 
+}
