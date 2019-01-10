@@ -1,7 +1,7 @@
 ## swagger-doc-multi-endpoint
 Multiple api endpoints at common swagger doc. We can switch among various endpoints on common swagger page. Multiple environment support also possible ie. Dev,Prod
 
-![Demo](rsample.png?raw=true "Demo")
+![Demo](sample.png?raw=true "Demo")
 
 ### Configure swagger json endpoints
 Edit `dist/config.json` to update endpoints and environment details
